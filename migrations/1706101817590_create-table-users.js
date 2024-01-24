@@ -32,7 +32,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     mobile_phone: {
-      type: 'INT',
+      type: 'TEXT',
       notNull: true,
     },
     place_of_birth: {

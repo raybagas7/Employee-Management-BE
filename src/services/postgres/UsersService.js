@@ -3,6 +3,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 
 const InvariantError = require('../../exceptions/InvariantError');
+const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class UsersService {
   constructor() {
@@ -32,7 +33,24 @@ class UsersService {
     }
   }
 
-  async addNewEmployee({
+  async checkIsAdmin(username) {
+    const query = {
+      text: 'SELECT is_admin from users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (result.rowCount) {
+      const isAdmid = result.rows[0].is_admin;
+
+      if (!isAdmid) {
+        throw new AuthorizationError('Only admin that permitted to this route');
+      }
+    }
+  }
+
+  async addNewUser({
     username,
     password,
     email,
@@ -43,6 +61,7 @@ class UsersService {
     place_of_birth,
     gender,
     marital_status,
+    is_admin = false,
   }) {
     await this.checkNewUsername(username, email);
 
@@ -50,8 +69,8 @@ class UsersService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = {
-      text: `INSERsT INTO users (user_id, username, password, email, fullname, profile_img, birth_date, mobile_phone, place_of_birth, gender, marital_status)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      text: `INSERT INTO users (user_id, username, password, email, fullname, profile_img, birth_date, mobile_phone, place_of_birth, gender, marital_status, is_admin)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING user_id`,
       values: [
         userId,
         username,
@@ -64,6 +83,7 @@ class UsersService {
         place_of_birth,
         gender,
         marital_status,
+        is_admin,
       ],
     };
 
@@ -73,7 +93,7 @@ class UsersService {
       throw new InvariantError('Failed to add new employee');
     }
 
-    return result.rows[0].id;
+    return result.rows[0].user_id;
   }
 }
 

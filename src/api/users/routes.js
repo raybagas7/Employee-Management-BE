@@ -1,8 +1,13 @@
 const routes = (handler) => [
+  //   {
+  //     method: 'POST',
+  //     path: '/users',
+  //     handler: handler.postNewEmployeeHandler,
+  //   },
   {
     method: 'POST',
-    path: '/users',
-    handler: handler.postNewUserHandler,
+    path: '/users/admin',
+    handler: handler.postNewAdminHandler,
   },
 ];
 
