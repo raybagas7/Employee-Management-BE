@@ -8,7 +8,7 @@ class AuthenticationsService {
 
   async addRefreshToken(token, username) {
     const query = {
-      text: 'UPDATE authentications SET token = $1 WHERE owner = $2',
+      text: 'INSERT INTO authentications VALUES ($1, $2)',
       values: [token, username],
     };
 
@@ -28,10 +28,10 @@ class AuthenticationsService {
     }
   }
 
-  async deleteRefreshToken(token, username) {
+  async deleteRefreshToken(token) {
     const query = {
-      text: 'UPDATE authentications SET token = null WHERE token = $1 AND owner = $2',
-      values: [token, username],
+      text: 'DELETE FROM authentications WHERE token = $1',
+      values: [token],
     };
 
     await this._pool.query(query);

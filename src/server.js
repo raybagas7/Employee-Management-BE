@@ -8,10 +8,16 @@ const ClientError = require('./exceptions/ClientError');
 const users = require('./api/users');
 const UsersService = require('./services/postgres/UsersService');
 const UsersValidator = require('./validator/users');
-const keys = require('@hapi/jwt/lib/keys');
+
+// authentications requirement
+const authentications = require('./api/authentications');
+const AuthenticationsService = require('./services/postgres/AuthenticationsService');
+const TokenManager = require('./tokenize/TokenManager');
+const AuthenticationsValidator = require('./validator/authentications');
 
 const init = async () => {
-  const userService = new UsersService();
+  const authenticationsService = new AuthenticationsService();
+  const usersService = new UsersService();
 
   const server = Hapi.server({
     port: config.app.port,
@@ -47,8 +53,17 @@ const init = async () => {
     {
       plugin: users,
       options: {
-        service: userService,
+        service: usersService,
         validator: UsersValidator,
+      },
+    },
+    {
+      plugin: authentications,
+      options: {
+        authenticationsService,
+        usersService,
+        tokenManager: TokenManager,
+        validator: AuthenticationsValidator,
       },
     },
   ]);
