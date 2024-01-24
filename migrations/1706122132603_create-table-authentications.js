@@ -6,11 +6,6 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: false,
     },
-    owner: {
-      type: 'VARCHAR(50)',
-      notNull: true,
-      unique: true,
-    },
   });
 };
 

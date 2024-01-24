@@ -24,7 +24,7 @@ class UsersHandler {
       is_admin,
     } = request.payload;
 
-    const user_id = await this._service.addNewUser({
+    const id = await this._service.addNewUser({
       username,
       password,
       email,
@@ -41,7 +41,50 @@ class UsersHandler {
       status: 'success',
       message: 'New admin has been made',
       data: {
-        user_id,
+        id,
+      },
+    });
+
+    response.code(201);
+    return response;
+  }
+
+  async postNewEmployeeHandler(request, h) {
+    this._validator.validateNewEmployeePayload(request.payload);
+
+    const {
+      username,
+      password,
+      email,
+      fullname,
+      birth_date,
+      mobile_phone,
+      place_of_birth,
+      gender,
+      marital_status,
+    } = request.payload;
+
+    const { id: ownerId } = request.auth.credentials;
+
+    await this._service.checkIsAdmin(ownerId);
+
+    const id = await this._service.addNewUser({
+      username,
+      password,
+      email,
+      fullname,
+      birth_date,
+      mobile_phone,
+      place_of_birth,
+      gender,
+      marital_status,
+    });
+
+    const response = h.response({
+      status: 'success',
+      message: 'New employee account has been made',
+      data: {
+        id,
       },
     });
 

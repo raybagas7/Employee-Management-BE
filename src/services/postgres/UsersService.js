@@ -34,10 +34,10 @@ class UsersService {
     }
   }
 
-  async checkIsAdmin(username) {
+  async checkIsAdmin(id) {
     const query = {
-      text: 'SELECT is_admin from users WHERE username = $1',
-      values: [username],
+      text: 'SELECT is_admin from users WHERE id = $1',
+      values: [id],
     };
 
     const result = await this._pool.query(query);
@@ -46,7 +46,7 @@ class UsersService {
       const isAdmid = result.rows[0].is_admin;
 
       if (!isAdmid) {
-        throw new AuthorizationError('Only admin that permitted to this route');
+        throw new AuthorizationError('Only admin is permitted to this route');
       }
     }
   }
@@ -70,8 +70,8 @@ class UsersService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = {
-      text: `INSERT INTO users (user_id, username, password, email, fullname, profile_img, birth_date, mobile_phone, place_of_birth, gender, marital_status, is_admin)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING user_id`,
+      text: `INSERT INTO users (id, username, password, email, fullname, profile_img, birth_date, mobile_phone, place_of_birth, gender, marital_status, is_admin)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id`,
       values: [
         userId,
         username,
@@ -94,12 +94,12 @@ class UsersService {
       throw new InvariantError('Failed to add new employee');
     }
 
-    return result.rows[0].user_id;
+    return result.rows[0].id;
   }
 
   async verifyUserCredential(username, password) {
     const query = {
-      text: 'SELECT user_id, password FROM users WHERE username = $1 ',
+      text: 'SELECT id, password FROM users WHERE username = $1 ',
       values: [username],
     };
 
