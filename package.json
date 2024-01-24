@@ -4,7 +4,9 @@
   "description": "Kazee Test FS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-prod": "NODE_ENV=production node ./src/server.js",
+    "start-dev": "nodemon ./src/server.js",
+    "migrate": "node-pg-migrate"
   },
   "author": "Agas",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "pg-format": "^1.0.4"
   },
   "devDependencies": {
+    "eslint": "^8.56.0",
     "nodemon": "^2.0.20"
   }
 }
