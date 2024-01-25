@@ -4,20 +4,26 @@ const Jwt = require('@hapi/jwt');
 const config = require('./utils/config');
 const ClientError = require('./exceptions/ClientError');
 
-// users requirement
+// users requirements
 const users = require('./api/users');
 const UsersService = require('./services/postgres/UsersService');
 const UsersValidator = require('./validator/users');
 
-// authentications requirement
+// authentications requirements
 const authentications = require('./api/authentications');
 const AuthenticationsService = require('./services/postgres/AuthenticationsService');
 const TokenManager = require('./tokenize/TokenManager');
 const AuthenticationsValidator = require('./validator/authentications');
 
+// salary requierments
+const SalaryService = require('./services/postgres/SalaryService');
+const SalaryValidator = require('./validator/salary');
+const salary = require('./api/salary');
+
 const init = async () => {
   const authenticationsService = new AuthenticationsService();
   const usersService = new UsersService();
+  const salaryService = new SalaryService(usersService);
 
   const server = Hapi.server({
     port: config.app.port,
@@ -64,6 +70,13 @@ const init = async () => {
         usersService,
         tokenManager: TokenManager,
         validator: AuthenticationsValidator,
+      },
+    },
+    {
+      plugin: salary,
+      options: {
+        service: salaryService,
+        validator: SalaryValidator,
       },
     },
   ]);
