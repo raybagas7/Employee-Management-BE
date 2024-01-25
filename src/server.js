@@ -19,11 +19,15 @@ const AuthenticationsValidator = require('./validator/authentications');
 const SalaryService = require('./services/postgres/SalaryService');
 const SalaryValidator = require('./validator/salary');
 const salary = require('./api/salary');
+const AttendanceService = require('./services/postgres/AttendanceService');
+const attendance = require('./api/attendance');
+const AttendanceValidator = require('./validator/attendance');
 
 const init = async () => {
   const authenticationsService = new AuthenticationsService();
   const usersService = new UsersService();
   const salaryService = new SalaryService(usersService);
+  const attendanceService = new AttendanceService();
 
   const server = Hapi.server({
     port: config.app.port,
@@ -77,6 +81,13 @@ const init = async () => {
       options: {
         service: salaryService,
         validator: SalaryValidator,
+      },
+    },
+    {
+      plugin: attendance,
+      options: {
+        service: attendanceService,
+        validator: AttendanceValidator,
       },
     },
   ]);
