@@ -36,6 +36,14 @@ const routes = (handler) => [
       auth: 'employee_mng',
     },
   },
+  {
+    method: 'GET',
+    path: '/users/{id}',
+    handler: handler.getUserInformationById,
+    options: {
+      auth: 'employee_mng',
+    },
+  },
 ];
 
 module.exports = routes;

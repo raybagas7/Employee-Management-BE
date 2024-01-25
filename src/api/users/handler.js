@@ -130,7 +130,7 @@ class UsersHandler {
       },
     });
 
-    response.code(201);
+    response.code(200);
     return response;
   }
 
@@ -147,8 +147,25 @@ class UsersHandler {
       },
     });
 
-    response.code(201);
+    response.code(200);
     return response;
+  }
+
+  async getUserInformationById(request) {
+    const { id } = request.params;
+    const { id: ownerId } = request.auth.credentials;
+
+    await this._service.checkIsAdmin(ownerId);
+
+    const data = await this._service.getUserById(id);
+
+    return {
+      status: 'success',
+      message: 'User informations retrieved',
+      data: {
+        user: data,
+      },
+    };
   }
 }
 
