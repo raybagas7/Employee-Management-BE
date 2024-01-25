@@ -20,6 +20,14 @@ const routes = (handler) => [
       auth: 'employee_mng',
     },
   },
+  {
+    method: 'GET',
+    path: '/users',
+    handler: handler.getEmployeeHandler,
+    options: {
+      auth: 'employee_mng',
+    },
+  },
 ];
 
 module.exports = routes;

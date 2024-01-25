@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const InvariantError = require('../../exceptions/InvariantError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 const AuthenticationError = require('../../exceptions/AuthenticationError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 
 class UsersService {
   constructor() {
@@ -141,6 +142,23 @@ class UsersService {
     }
 
     return result.rows[0].id;
+  }
+
+  async getAllEmployeeData() {
+    const query = {
+      text: `SELECT users.fullname, users.email, users.mobile_phone, users.place_of_birth, users.gender, users.marital_status, users.is_admin,
+      salary.salary, salary.role
+      FROM users
+      LEFT JOIN salary ON users.id = salary.owner`,
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Employee not exist');
+    }
+
+    return result.rows;
   }
 }
 
