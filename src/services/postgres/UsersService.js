@@ -121,6 +121,27 @@ class UsersService {
 
     return id;
   }
+
+  async updateUser(id, updatedFields) {
+    const setClause = Object.keys(updatedFields)
+      .map((key, index) => `${key} = $${index + 2}`)
+      .join(', ');
+
+    const values = [id, ...Object.values(updatedFields)];
+
+    const query = {
+      text: `UPDATE users SET ${setClause} WHERE id = $1 RETURNING id`,
+      values,
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Failed to update user data');
+    }
+
+    return result.rows[0].id;
+  }
 }
 
 module.exports = UsersService;

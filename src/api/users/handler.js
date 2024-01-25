@@ -91,6 +91,29 @@ class UsersHandler {
     response.code(201);
     return response;
   }
+
+  async putEmployeeHandler(request, h) {
+    this._validator.validateUpdateEmployeePayload(request.payload);
+
+    const { id: ownerId } = request.auth.credentials;
+
+    await this._service.checkIsAdmin(ownerId);
+
+    const { id: employeeId } = request.payload;
+
+    const id = await this._service.updateUser(employeeId, request.payload);
+
+    const response = h.response({
+      status: 'success',
+      message: 'Employee data updated',
+      data: {
+        id,
+      },
+    });
+
+    response.code(201);
+    return response;
+  }
 }
 
 module.exports = UsersHandler;

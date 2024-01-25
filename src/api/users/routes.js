@@ -12,6 +12,14 @@ const routes = (handler) => [
       auth: 'employee_mng',
     },
   },
+  {
+    method: 'PUT',
+    path: '/users',
+    handler: handler.putEmployeeHandler,
+    options: {
+      auth: 'employee_mng',
+    },
+  },
 ];
 
 module.exports = routes;

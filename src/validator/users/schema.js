@@ -33,7 +33,23 @@ const NewAdminPayloadSchema = Joi.object({
   is_admin: Joi.boolean().required(),
 });
 
+const UpdateEmployeePayloadSchema = Joi.object({
+  id: Joi.string().required(),
+  username: Joi.string().min(5).max(25),
+  email: Joi.string().email({
+    tlds: true,
+  }),
+  fullname: Joi.string().min(2),
+  birth_date: Joi.string(),
+  mobile_phone: Joi.number().integer(),
+  place_of_birth: Joi.string(),
+  gender: Joi.string(),
+  marital_status: Joi.string(),
+  is_admin: Joi.boolean(),
+});
+
 module.exports = {
   NewEmployeePayloadSchema,
   NewAdminPayloadSchema,
+  UpdateEmployeePayloadSchema,
 };
