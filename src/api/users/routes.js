@@ -23,6 +23,14 @@ const routes = (handler) => [
   {
     method: 'GET',
     path: '/users',
+    handler: handler.getAllEmployeeHandler,
+    options: {
+      auth: 'employee_mng',
+    },
+  },
+  {
+    method: 'GET',
+    path: '/users/detail',
     handler: handler.getEmployeeHandler,
     options: {
       auth: 'employee_mng',

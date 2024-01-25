@@ -115,7 +115,7 @@ class UsersHandler {
     return response;
   }
 
-  async getEmployeeHandler(request, h) {
+  async getAllEmployeeHandler(request, h) {
     const { id: ownerId } = request.auth.credentials;
 
     await this._service.checkIsAdmin(ownerId);
@@ -127,6 +127,23 @@ class UsersHandler {
       message: 'Employee data updated',
       data: {
         users: usersData,
+      },
+    });
+
+    response.code(201);
+    return response;
+  }
+
+  async getEmployeeHandler(request, h) {
+    const { id: ownerId } = request.auth.credentials;
+
+    const user = await this._service.getEmployeeDetail(ownerId);
+
+    const response = h.response({
+      status: 'success',
+      message: 'Detail employee retrieved',
+      data: {
+        user,
       },
     });
 
