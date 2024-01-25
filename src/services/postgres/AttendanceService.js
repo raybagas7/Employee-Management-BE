@@ -94,7 +94,7 @@ class AttendanceService {
       await this.checkOutSameDay(owner);
     }
 
-    const attendId = `emp-${nanoid(10)}`;
+    const attendId = `atd-${nanoid(10)}`;
 
     const query = {
       text: `INSERT INTO attendance (attend_id, status, date_log, owner)
