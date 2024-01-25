@@ -12,7 +12,12 @@ const UpdateSalaryPayloadSchema = Joi.object({
   role: Joi.string(),
 });
 
+const DeleteSalaryPayloadSchema = Joi.object({
+  owner: Joi.string().required(),
+});
+
 module.exports = {
   PostSalaryPayloadSchema,
   UpdateSalaryPayloadSchema,
+  DeleteSalaryPayloadSchema,
 };

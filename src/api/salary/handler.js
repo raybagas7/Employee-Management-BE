@@ -41,6 +41,24 @@ class SalaryHandler {
     response.code(200);
     return response;
   }
+
+  async deleteSalaryHandler(request, h) {
+    this._validator.validateDeleteSalaryPayload(request.payload);
+
+    const { id: adminId } = request.auth.credentials;
+
+    const { owner } = request.payload;
+
+    await this._service.deleteSalary(adminId, owner);
+
+    const response = h.response({
+      status: 'success',
+      message: 'Salary deleted',
+    });
+
+    response.code(200);
+    return response;
+  }
 }
 
 module.exports = SalaryHandler;

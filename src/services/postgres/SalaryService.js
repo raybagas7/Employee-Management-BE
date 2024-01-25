@@ -1,6 +1,7 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 
 class SalaryService {
   constructor(usersService) {
@@ -70,6 +71,21 @@ class SalaryService {
 
     if (!result.rowCount) {
       throw new InvariantError('Failed to update salary or role employee');
+    }
+  }
+
+  async deleteSalary(adminId, owner) {
+    await this._usersService.checkIsAdmin(adminId);
+
+    const query = {
+      text: 'DELETE FROM salary WHERE owner = $1 RETURNING salary_id',
+      values: [owner],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Salary id not found');
     }
   }
 }

@@ -15,6 +15,14 @@ const routes = (handler) => [
       auth: 'employee_mng',
     },
   },
+  {
+    method: 'DELETE',
+    path: '/salary/employee',
+    handler: handler.deleteSalaryHandler,
+    options: {
+      auth: 'employee_mng',
+    },
+  },
 ];
 
 module.exports = routes;
