@@ -146,7 +146,7 @@ class UsersService {
 
   async getAllEmployeeData() {
     const query = {
-      text: `SELECT users.id, users.fullname, users.email, users.mobile_phone, users.place_of_birth, users.gender, users.marital_status, users.is_admin,
+      text: `SELECT users.id, users.birth_date, users.fullname, users.email, users.mobile_phone, users.place_of_birth, users.gender, users.marital_status, users.is_admin,
       salary.salary_id, salary.salary, salary.role
       FROM users
       LEFT JOIN salary 
