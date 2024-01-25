@@ -7,6 +7,14 @@ const routes = (handler) => [
       auth: 'employee_mng',
     },
   },
+  {
+    method: 'PUT',
+    path: '/salary/employee',
+    handler: handler.putSalaryHandler,
+    options: {
+      auth: 'employee_mng',
+    },
+  },
 ];
 
 module.exports = routes;

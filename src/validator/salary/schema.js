@@ -6,6 +6,13 @@ const PostSalaryPayloadSchema = Joi.object({
   role: Joi.string().required(),
 });
 
+const UpdateSalaryPayloadSchema = Joi.object({
+  owner: Joi.string().required(),
+  salary: Joi.number().integer(),
+  role: Joi.string(),
+});
+
 module.exports = {
   PostSalaryPayloadSchema,
+  UpdateSalaryPayloadSchema,
 };
