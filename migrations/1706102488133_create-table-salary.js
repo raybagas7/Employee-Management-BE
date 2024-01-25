@@ -9,7 +9,7 @@ exports.up = (pgm) => {
       primaryKey: true,
     },
     salary: {
-      type: 'INT',
+      type: 'BIGINT',
       notNull: true,
     },
     owner: {
