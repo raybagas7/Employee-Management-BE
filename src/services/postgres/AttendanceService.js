@@ -2,6 +2,7 @@ const { Pool } = require('pg');
 const { DateTime } = require('luxon');
 const { nanoid } = require('nanoid');
 const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 
 class AttendanceService {
   constructor() {
@@ -103,6 +104,23 @@ class AttendanceService {
     };
 
     await this._pool.query(query);
+  }
+
+  async getAttendanceByToken(owner) {
+    const query = {
+      text: `SELECT attend_id, status, date_log
+      FROM attendance
+      WHERE owner = $1`,
+      values: [owner],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('No attendance');
+    }
+
+    return result.rows;
   }
 }
 

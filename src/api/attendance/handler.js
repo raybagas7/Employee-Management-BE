@@ -25,6 +25,23 @@ class AttendanceHandler {
     response.code(201);
     return response;
   }
+
+  async getAttendanceWithTokenHandler(request, h) {
+    const { id: ownerId } = request.auth.credentials;
+
+    const attendances = await this._service.getAttendanceByToken(ownerId);
+
+    const response = h.response({
+      status: 'success',
+      message: 'Attendance user retrieved',
+      data: {
+        attendances,
+      },
+    });
+
+    response.code(200);
+    return response;
+  }
 }
 
 module.exports = AttendanceHandler;
