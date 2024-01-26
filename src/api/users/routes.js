@@ -40,9 +40,6 @@ const routes = (handler) => [
     method: 'GET',
     path: '/users/{id}',
     handler: handler.getUserInformationById,
-    options: {
-      auth: 'employee_mng',
-    },
   },
 ];
 

@@ -153,9 +153,6 @@ class UsersHandler {
 
   async getUserInformationById(request) {
     const { id } = request.params;
-    const { id: ownerId } = request.auth.credentials;
-
-    await this._service.checkIsAdmin(ownerId);
 
     const data = await this._service.getUserById(id);
 
