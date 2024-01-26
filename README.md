@@ -1,4 +1,4 @@
-# Employee Management
+# Employee Management REST API
 
 Backend for employee management, consisting of admin and regular employees.
 
