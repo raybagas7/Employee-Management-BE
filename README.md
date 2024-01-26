@@ -12,6 +12,8 @@ Backend for employee management, consisting of admin and regular employees.
 
 ## Run Locally
 
+It need PostgreSQL and NodeJs installed in your local environment
+
 Clone the project
 
 ```bash
